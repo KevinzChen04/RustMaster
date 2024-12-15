@@ -18,7 +18,9 @@ fn main() -> std::io::Result<()> {
         frame_rate: 3,
         target_bitrate: 4,
     };
-    let src = args.address;
-    socket.send_to(&bincode::serialize(&send_this).unwrap(), src)?;
+
+    let mut writer = Vec::new();
+    send_this.serialize(&mut writer)?;
+    socket.send_to(&writer, args.address)?;
     Ok(())
 }

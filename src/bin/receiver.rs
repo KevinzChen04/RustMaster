@@ -13,7 +13,7 @@ fn main() -> std::io::Result<()> {
 
     let mut buf = [0; 494994];
     socket.recv_from(&mut buf)?;
-    let config: Config = bincode::deserialize(&buf).expect("Incorrect config format");
+    let config = Config::deserialize(&buf[..])?;
     println!("{:?}", &config);
     Ok(())
 }
