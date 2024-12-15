@@ -1,6 +1,5 @@
-use core::str;
 use std::net::UdpSocket;
-
+use rust_master::datagram::Config;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -12,8 +11,9 @@ fn main() -> std::io::Result<()> {
     let args = Args::parse();
     let socket = UdpSocket::bind(args.address)?;
 
-    let mut buf = [0; 20];
+    let mut buf = [0; 494994];
     socket.recv_from(&mut buf)?;
-    print!("{:?}\n", str::from_utf8(&buf).expect("why"));
+    let config: Config = bincode::deserialize(&buf).expect("Incorrect config format");
+    println!("{:?}", &config);
     Ok(())
 }
